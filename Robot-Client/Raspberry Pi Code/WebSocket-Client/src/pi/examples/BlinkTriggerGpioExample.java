@@ -28,15 +28,13 @@ package pi.examples;
  * #L%
  */
 
+import java.util.Scanner;
+
 import com.pi4j.io.gpio.GpioController;
 import com.pi4j.io.gpio.GpioFactory;
-import com.pi4j.io.gpio.GpioPinDigitalInput;
 import com.pi4j.io.gpio.GpioPinDigitalOutput;
-import com.pi4j.io.gpio.PinPullResistance;
 import com.pi4j.io.gpio.PinState;
 import com.pi4j.io.gpio.RaspiPin;
-import com.pi4j.io.gpio.trigger.GpioBlinkStateTrigger;
-import com.pi4j.io.gpio.trigger.GpioBlinkStopStateTrigger;
 
 /**
  * This example code demonstrates how to setup blinking triggers for GPIO pins on the Raspberry Pi.
@@ -51,25 +49,25 @@ public class BlinkTriggerGpioExample {
 
         // create gpio controller
         final GpioController gpio = GpioFactory.getInstance();
-
-        // provision gpio pin #02 as an input pin with its internal pull down resistor enabled
-        final GpioPinDigitalInput myButton = gpio.provisionDigitalInputPin(RaspiPin.GPIO_00, 
-                                                  PinPullResistance.PULL_DOWN);
-        
+   
         System.out.println(" ... complete the GPIO #02 circuit and see the blink trigger take effect.");
         
         // setup gpio pins #04 an output pins and make sure they are all LOW at startup
-        final GpioPinDigitalOutput myLed = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_04, PinState.LOW);
+        final GpioPinDigitalOutput myLed = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_02, PinState.LOW);
         
-        // create a gpio control trigger on the input pin ; when the input goes HIGH, turn on blinking
-        myButton.addTrigger(new GpioBlinkStateTrigger(PinState.HIGH, myLed, 250));
-
-        // create a gpio control trigger on the input pin ; when the input goes LOW, turn off blinking
-        myButton.addTrigger(new GpioBlinkStopStateTrigger(PinState.LOW, myLed));
-
+        Scanner keyboard = new Scanner(System.in);
+        System.out.println("enter an integer");
+        int myint = keyboard.nextInt();
+        
         // keep program running until user aborts (CTRL-C)
         for (;;) {
-            Thread.sleep(500);
+        	 System.out.println("enter an integer");
+             myint = keyboard.nextInt();
+             if(myint ==0){
+            	 myLed.blink(1000, 3000);
+             }
+            //Thread.sleep(500);
+            System.out.println("Cycling motors");
         }
         
         // stop all GPIO activity/threads by shutting down the GPIO controller
