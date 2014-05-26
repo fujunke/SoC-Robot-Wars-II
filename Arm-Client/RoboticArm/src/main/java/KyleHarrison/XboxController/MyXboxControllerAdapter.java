@@ -17,6 +17,48 @@ public class MyXboxControllerAdapter extends XboxControllerAdapter {
 	public void leftThumbMagnitude(double magnitude) {
 		setLastInput();
 	}
+	
+	ControllerSettings leftUpThumb = new ControllerSettings();
+	ControllerSettings rightUpThumb = new ControllerSettings();
+	
+	private void leftUpThumb(double direction){
+		if(this.leftUpThumb.enabled==false){
+			System.out.println(direction);
+			this.leftUpThumb.waitTime=this.leftUpThumb.delay;	
+			if(direction>=175 && direction <=185){
+				this.leftUpThumb.enabled=true;	
+			}
+		}else if(this.leftUpThumb.enabled){
+			if(direction>=175 && direction <=185){
+				arm.doArmOp('f', arm);
+			}else{
+				this.leftUpThumb.enabled=false;
+			}
+		}
+	}
+	
+	private void rightUpThumb(double direction){
+		if(this.rightUpThumb.enabled==false){
+			System.out.println(direction);
+			if(direction>=0 && direction <=35){
+				this.rightUpThumb.enabled=true;
+			}
+		}else if(this.rightUpThumb.enabled){
+			if(direction>=0 && direction <=35){
+				arm.doArmOp('r', arm);
+			}else{
+				this.rightUpThumb.enabled=false;
+			}
+		}
+	}
+	
+	public void leftThumbDirection(double direction){
+		
+		leftUpThumb(direction);
+	
+		rightUpThumb(direction);
+		
+	}
 
 	public void rightThumbMagnitude(double magnitude) {
 		setLastInput();
@@ -105,10 +147,6 @@ public class MyXboxControllerAdapter extends XboxControllerAdapter {
 	public void leftTrigger(double value) {
 		System.out.println("Turn Left");
 		arm.doArmOp('k', arm);
-		setLastInput();
-	}
-
-	public void leftThumbDirection(double direction) {
 		setLastInput();
 	}
 

@@ -1,6 +1,7 @@
 package KyleHarrison.XboxController;
 
 import KyleHarrison.RoboticArm.ArmCommunicator;
+import KyleHarrison.RoboticArm.JointID;
 import ch.aplu.turtle.*;
 import ch.aplu.xboxcontroller.*;
 
